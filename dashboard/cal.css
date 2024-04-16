@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+#calculator {
+    width: 300px;
+    margin: 50px auto;
+    background-color: #1b1b1b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#display {
+    width: calc(100% - 10px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+#numberbuttons {
+    background-color: #363636;
+}
+
+#operationbuttons {
+    background-color: #ff8800;
+}
+
+#submitbutton {
+    background-color: #a1a0a0;
+    margin-top: 5px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    height: 65px;
+    width: 65px;
+    border-radius: 50%; /* Updated to make the button a circle */
+    font-size: 24px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+    color: white;
+}
+
+button:hover {
+    background-color: #e0e0e0;
+}
+
+button:active {
+    background-color: #ccc;
+}
+
+.result {
+    margin-top: 10px;
+    font-size: 20px;
+    height: 40px;
+    text-align: center;
+    border-radius: 40px;
+    padding: 10px;
+    color: black;
+    background-color: #363636;
+    vertical-align: middle;
+    line-height: 40px; 
+}
