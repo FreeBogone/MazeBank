@@ -29,3 +29,17 @@ CREATE TABLE History(
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES Users(id)
 );
+
+-- @block
+INSERT INTO Users(firstname, lastname, email, password) VALUES('John', 'Doe', 'johndoe@gmail.com', 'password');
+INSERT INTO Users(firstname, lastname, email, password) VALUES('Jane', 'Doe', 'janedoe@gmail.com', 'password');
+
+-- @block
+INSERT INTO Accounts(checking_balance, savings_balance, user_id) VALUES(1000.00, 5000.00, 1);
+INSERT INTO Accounts(checking_balance, savings_balance, user_id) VALUES(2000.00, 3000.00, 2);
+
+-- @block
+INSERT INTO History(transaction_type, account_type, amount, user_id) VALUES('Deposit', 'Checking', 1000.00, 1);
+INSERT INTO History(transaction_type, amount, user_id) VALUES('Deposit', 'Savings', 5000.00, 1);
+INSERT INTO History(transaction_type, account_type, amount, user_id) VALUES('Deposit', 'Checking', 2000.00, 2);
+INSERT INTO History(transaction_type, amount, user_id) VALUES('Deposit', 'Savings', 3000.00, 2);
