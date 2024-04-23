@@ -26,4 +26,38 @@
   </div>
 </nav>
 
+<body>
+<text>History Page</text>
+<?php
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $database = "Banking";
+
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $database);
+  // Check connection
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+}
+
+$rows = $conn->query("SELECT * FROM History");
+$headers = $conn->query("SHOW COLUMNS FROM History");
+echo "<table>";
+echo "<tr>";
+while ($header = $headers->fetch_assoc()) {
+    echo "<th>" . $header['Field'] . "</th>";
+}
+echo "</tr>";
+while ($row = $rows->fetch_assoc()) {
+    echo "<tr>";
+    foreach ($row as $key => $value) {
+        echo "<td>" . $value . "</td>";
+    }
+    echo "</tr>";
+}
+echo "</table>";
+
+?>
+</body>
 <text>History Page</text>
