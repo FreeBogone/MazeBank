@@ -27,8 +27,8 @@
 </nav>
 
 <body>
-<text>History Page</text>
 <?php
+  $currentUser = 1;
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -41,23 +41,34 @@
       die("Connection failed: " . $conn->connect_error);
 }
 
-$rows = $conn->query("SELECT * FROM History");
-$headers = $conn->query("SHOW COLUMNS FROM History");
-echo "<table>";
-echo "<tr>";
-while ($header = $headers->fetch_assoc()) {
-    echo "<th>" . $header['Field'] . "</th>";
-}
-echo "</tr>";
-while ($row = $rows->fetch_assoc()) {
-    echo "<tr>";
-    foreach ($row as $key => $value) {
-        echo "<td>" . $value . "</td>";
-    }
-    echo "</tr>";
-}
-echo "</table>";
+$rows = $conn->query("SELECT transaction_type, amount FROM History WHERE user_id = $currentUser");
 
 ?>
+<div class="container table-responsive">
+  <table class="table table-bordered">
+    <thead class="thead-light">
+      <tr>
+        <th>Transaction Type</th>
+        <th>Amount</th>
+      </tr>
+      <?php 
+      while ($row = $rows->fetch_assoc()) {
+        echo "<tr>";
+        foreach ($row as $key => $value) {
+          if($value == 'deposit') {
+            echo "<td style='color: green'>" . $value . "</td>"; 
+          }
+          else if($value == 'withdraw') {
+            echo "<td style='color: red'>" . $value . "</td>"; 
+          }
+          else {
+            echo "<td>" . $value . "</td>"; 
+          }
+        }
+        echo "</tr>";
+      }
+      ?>
+    </thead>
+  </table>
+</div>
 </body>
-<text>History Page</text>
