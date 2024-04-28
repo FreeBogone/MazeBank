@@ -40,39 +40,88 @@
         </div>
     </nav>
 
+        
     <div class="container mt-4">
         <h1>Transaction Page</h1>
-        <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Handle form submission
-            // Your existing process_transaction.php code here
-            
-            // Display success message
-            echo '<div class="alert alert-success" role="alert">Money deposited successfully!</div>';
-        }
-        ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
-                <label for="amount">Amount to Deposit</label>
-                <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
-            </div>
-            <div class="form-group">
-                <label for="save_option">Save to Savings</label>
-                <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
-                    <option value="none">No Savings</option>
-                    <option value="percentage">Save Percentage</option>
-                    <option value="amount">Save Specific Amount</option>
+                <label for="transaction_type">Transaction Type</label>
+                <select class="form-control" id="transaction_type" name="transaction_type" onchange="toggleForm()">
+                    <option value="none">Select Transaction Type</option>
+                    <option value="deposit">Deposit</option>
+                    <option value="transfer">Transfer</option>
                 </select>
             </div>
-            <div class="form-group" id="specific_amount_field" style="display: none;">
-                <label for="specific_amount">Specific Amount to Save</label>
-                <input type="text" class="form-control" id="specific_amount" name="specific_amount" placeholder="Enter specific amount">
+            <div id="transaction_form" style="display: none;">
+    </div>
+            <div id="deposit_form" style="display: none;">
+                <div class="form-group">
+                    <label for="amount">Amount to Deposit</label>
+                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="save_option">Save to Savings</label>
+                    <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
+                        <option value="none">No Savings</option>
+                        <option value="percentage">Save Percentage</option>
+                        <option value="amount">Save Specific Amount</option>
+                    </select>
+                </div>
+                <div class="form-group" id="specific_amount_field" style="display: none;">
+                    <label for="specific_amount">Specific Amount to Save</label>
+                    <input type="text" class="form-control" id="specific_amount" name="specific_amount" placeholder="Enter specific amount">
+                </div>
+                <button type="submit" class="btn btn-danger">Deposit</button>
             </div>
-            <button type="submit" class="btn btn-primary">Deposit</button>
+            <div id="transfer_form" style="display: none;">
+                <!-- Transfer form code here -->
+                <div class="form-group">
+                    <label for="amount">Amount to Transfer</label>
+                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="save_option">Transfer From</label>
+                    <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
+                        <option value="none">Transfer From</option>
+                        <option value="percentage">Checking</option>
+                        <option value="amount">Savings</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="save_option">Transfer To</label>
+                    <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
+                        <option value="none">Transfer To</option>
+                        <option value="percentage">Checking</option>
+                        <option value="amount">Savings</option>
+                    </select>
+                <div class="form-group" id="specific_amount_field" style="display: none;">
+                    <label for="specific_amount">Specific Amount to Save</label>
+                    <input type="text" class="form-control" id="specific_amount" name="specific_amount" placeholder="Enter specific amount">
+                </div>
+                <button type="submit" class="btn btn-danger">Deposit</button>
+                
+            </div>
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+        function toggleForm() {
+            var transactionType = document.getElementById("transaction_type").value;
+            var depositForm = document.getElementById("deposit_form");
+            var transferForm = document.getElementById("transfer_form");
+
+            if (transactionType === "deposit") {
+                depositForm.style.display = "block";
+                transferForm.style.display = "none";
+            } else if (transactionType === "transfer") {
+                depositForm.style.display = "none";
+                transferForm.style.display = "block";
+            }else {
+                depositForm.style.display = "none";
+                transferForm.style.display = "none";
+            }
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
