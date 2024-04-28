@@ -26,4 +26,65 @@
   </div>
 </nav>
 
-<text>HomePage</text>
+<h1 style="text-align:center">Home Page</h1>
+<div class="container mt-4" style="text-align:center;" id="checking">
+  
+  <?php
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "banking";
+
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  $sql ="SELECT * FROM accounts WHERE user_id = 1";
+  $result = mysqli_query($conn, $sql);
+
+  
+  if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+      echo "<strong>Checking:</strong> " . $row["checking_balance"]. " - <strong>Savings:</strong> " . $row["savings_balance"]. "<br>";
+
+    }
+  }
+?>
+
+
+</div>
+<br>
+<br>
+<br>
+<div id="transaction" >
+<h1>Transfer Money</h1>
+<button onclick="window.location.href='/dashboard/TransactionPage.php'" type="submit" class="btn btn-danger" color="red">Transfer Money</button>
+</div>
+
+<style>
+  #checking {
+    display: block;
+    margin: 5 auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin: auto;
+    width: 500px;
+    text-align: center;
+    position : relative;
+    background-color: #dc3545;
+    color : white;
+  }
+
+  #transaction {
+    display: block;
+    margin: 5 auto;
+    padding: 10px;
+    margin: auto;
+    width: 500px;
+    text-align: center;
+    position : relative;
+  }
+</style>  
