@@ -59,36 +59,54 @@
     <div class="login-container">
         <h2>Login</h2>
         <form method="post" action="LoginPage.php">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password">
             <input type="submit" value="Login">
         </form>
+
         <?php
-        // Check if form is submitted
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Retrieve username and password from form
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-
-            // Read users.txt file
-            $users = file("users.txt", FILE_IGNORE_NEW_LINES);
-
-            // Check if username and password match
-            foreach ($users as $user) {
-                list($storedUsername, $storedPassword) = explode(':', $user);
-                if ($username == $storedUsername && $password == $storedPassword) {
-                    // Redirect to HomePage.php if credentials are correct
-                    header("Location: HomePage.php");
-                    exit;
-                }
+              // Establish database connection
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "Banking";
+            
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
             }
-            // Display error message if credentials are incorrect
-            echo "<p class='error-message'>Invalid username or password. Please try again.</p>";
-        }
+
+            session_start();
+
+            if(isset($_SESSION['user_id'])) {
+                header("Location: HomePage.php");
+                exit;
+            }
+            
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+            
+                $sql = "SELECT id, email, password FROM Users WHERE email='$email'";
+                $result = $conn->query($sql);
+            
+                if ($result->num_rows == 1) {
+                    $row = $result->fetch_assoc();
+                    if ($password === $row['password']) { // Direct comparison
+                        $_SESSION['user_id'] = $row['id'];
+                        header("Location: HomePage.php");
+                        exit;
+                    }
+                }
+                
+                echo "<p class='error-message'>Invalid email or password. Please try again.</p>";
+            }
         ?>
-            <div style="text-align: center; margin-top: 10px;">
+        <div style="text-align: center; margin-top: 10px;">
             <a href="CreateAccount.php" style="text-decoration: none; color: #007bff;">Create Account</a>
         </div>
     </div>
