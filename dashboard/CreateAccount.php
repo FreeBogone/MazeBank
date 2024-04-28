@@ -83,26 +83,31 @@
         </form>
         <?php
         // PHP code here
+              // Establish database connection
+              $servername = "localhost";
+              $username = "root";
+              $password = "";
+              $dbname = "Banking";
+              
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              
+              // Check connection
+              if ($conn->connect_error) {
+                  die("Connection failed: " . $conn->connect_error);
+              }
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $newUsername = $_POST['new_username'];
-            $newPassword = $_POST['new_password'];
-            
-            // Check if username already exists
-            $users = file("users.txt", FILE_IGNORE_NEW_LINES);
-            foreach ($users as $user) {
-                list($storedUsername, $storedPassword) = explode(':', $user);
-                if ($newUsername == $storedUsername) {
-                    echo "<p class='error-message'>Username already exists. Please choose a different one.</p>";
-                    exit;
-                }
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+            $email = $_POST['email'];
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        
+            $sql = "INSERT INTO Users (firstname, lastname, email, password) VALUES ('$firstname', '$lastname', '$email', '$password')";
+            if ($conn->query($sql) === TRUE) {
+                echo "<p style='color:green'>Account created successfully!</p>";
+            } else {
+                echo "<p class='error-message'>Error creating account: " . $conn->error . "</p>";
             }
-            
-            // Add new username and password to users.txt
-            $file = fopen("users.txt", "a");
-            fwrite($file, $newUsername . ":" . $newPassword . PHP_EOL);
-            fclose($file);
-            
-            echo "<p style='color:green'>Account created successfully!</p>";
         }
         ?>
         <a href="LoginPage.php" class="return-button">Return to Login Page</a>
