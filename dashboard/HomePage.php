@@ -31,6 +31,7 @@
   
   <?php
   session_start();
+  $userId = $_SESSION["user_id"];
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -42,13 +43,22 @@
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql ="SELECT * FROM accounts WHERE user_id = 1";
+  $sql ="SELECT * FROM accounts WHERE user_id = $userId";
   $result = mysqli_query($conn, $sql);
+
+  $sql2 = "SELECT * FROM users WHERE id = $userId";
+  $result2 = mysqli_query($conn, $sql2);
+
+  if (mysqli_num_rows($result2) > 0) {
+    while($row = mysqli_fetch_assoc($result2)) {
+      echo "<h2>Welcome " . $row["firstname"]. " " . $row["lastname"]. "</h2>";
+    }
+  }
 
   $currentUser = $_SESSION["user_id"];
   if (mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-      echo "<strong>Checking:</strong> " . $row["checking_balance"]. " - <strong>Savings:</strong> " . $row["savings_balance"]. "<br>";
+      echo "<h3><strong>Checking:</strong> $" . $row["checking_balance"]. " <br> <strong>Savings:</strong>  $" . $row["savings_balance"]. "<h3><br>";
     }
   }
 ?>
