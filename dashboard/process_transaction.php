@@ -1,8 +1,12 @@
 <?php
+
+echo "Session ID: " . session_id();
+
+
 // Establish database connection
 $servername = "localhost";
-$username = "username";
-$password = "password";
+$username = "root";
+$password = "";
 $dbname = "Banking";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -16,8 +20,10 @@ if ($conn->connect_error) {
 $amount = $_POST['amount'];
 $save_option = $_POST['save_option'];
 
-// user authentication and user ID available in session
+// user authentication and user ID available in sessio
+// Retrieve user ID from session
 $user_id = $_SESSION['user_id'];
+
 
 // Update checking balance
 $sql = "UPDATE Accounts SET checking_balance = checking_balance + $amount WHERE user_id = $user_id";
@@ -46,5 +52,3 @@ $conn->query($sql);
 $conn->close();
 
 exit();
-?>
-
