@@ -31,27 +31,24 @@
 
     
 
-    <h1>Deposit or Withdraw From Your Accounts</h1>
-    <div class="container mt-4">
+    <h1 style="text-align:center">Deposit or Withdraw From Your Accounts</h1>
+    <div style="text-align:center" class="container mt-4">
         <form method="post" id="balanceForm" action="TransactionPage.php">
-            <!-- Input field for user ID -->
-            <label for="user_id">Enter PIN:</label><br>
-            <input type="number" id="user_id" name="user_id" min="1" required><br><br>
             <!-- Input fields for transaction type and amount -->
             <label for="transaction_type">Select Transaction Type:</label><br>
-            <select id="transaction_type" name="transaction_type">
+            <select class="form-control" id="transaction_type" name="transaction_type">
                 <option value="deposit">Deposit</option>
                 <option value="withdraw">Withdraw</option>
                 <option value="transfer">Transfer</option>
             </select><br><br>
             <label for="account">Select Account Type:</label><br>
-            <select id="account" name="account">
+            <select class="form-control" id="account" name="account">
                 <option value="checking">checking</option>
                 <option value="savings">savings</option>
             </select><br><br>
             <label for="amount">Enter Amount:</label><br>
-            <input type="number" id="amount" name="amount" min="0" step="0.01" required><br><br>
-            <button type="submit">Submit</button>
+            <input class="form-control" type="number" id="amount" name="amount" min="0" step="0.01" required><br><br>
+            <button type="submit" class="btn btn-danger">Submit</button>
         </form>
     </div>
 </body>
