@@ -3,23 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script>
-        function toggleSaveAmountField() {
-            var saveOption = document.getElementById("save_option").value;
-            var specificAmountField = document.getElementById("specific_amount_field");
 
-            if (saveOption === "amount") {
-                specificAmountField.style.display = "block";
-            } else {
-                specificAmountField.style.display = "none";
-            }
-        }
-    </script>
+    <title>Add to Checking Balance</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/dashboard/HomePage.php">Maze Bank</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -31,7 +20,7 @@
                     <a class="nav-link" href="/dashboard/HomePage.php">Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/dashboard/TransactionPage.php">Make a Transaction</a>
+                    <a class="nav-link" href="/dashboard/TransactionPage.html">Make a Transaction</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/dashboard/HistoryPage.php">Transaction History <span class="sr-only">(current)</span></a>
@@ -40,90 +29,107 @@
         </div>
     </nav>
 
-        
+    
+
+    <h1>Add to Checking Balance</h1>
     <div class="container mt-4">
-        <h1>Transaction Page</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="transaction_type">Transaction Type</label>
-                <select class="form-control" id="transaction_type" name="transaction_type" onchange="toggleForm()">
-                    <option value="none">Select Transaction Type</option>
-                    <option value="deposit">Deposit</option>
-                    <option value="transfer">Transfer</option>
-                </select>
-            </div>
-            <div id="transaction_form" style="display: none;">
-    </div>
-            <div id="deposit_form" style="display: none;">
-                <div class="form-group">
-                    <label for="amount">Amount to Deposit</label>
-                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
-                </div>
-                <div class="form-group">
-                    <label for="save_option">Save to Savings</label>
-                    <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
-                        <option value="none">No Savings</option>
-                        <option value="percentage">Save Percentage</option>
-                        <option value="amount">Save Specific Amount</option>
-                    </select>
-                </div>
-                <div class="form-group" id="specific_amount_field" style="display: none;">
-                    <label for="specific_amount">Specific Amount to Save</label>
-                    <input type="text" class="form-control" id="specific_amount" name="specific_amount" placeholder="Enter specific amount">
-                </div>
-                <button type="submit" class="btn btn-danger">Deposit</button>
-            </div>
-            <div id="transfer_form" style="display: none;">
-                <!-- Transfer form code here -->
-                <div class="form-group">
-                    <label for="amount">Amount to Transfer</label>
-                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
-                </div>
-                <div class="form-group">
-                    <label for="save_option">Transfer From</label>
-                    <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
-                        <option value="none">Transfer From</option>
-                        <option value="percentage">Checking</option>
-                        <option value="amount">Savings</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="save_option">Transfer To</label>
-                    <select class="form-control" id="save_option" name="save_option" onchange="toggleSaveAmountField()">
-                        <option value="none">Transfer To</option>
-                        <option value="percentage">Checking</option>
-                        <option value="amount">Savings</option>
-                    </select>
-                <div class="form-group" id="specific_amount_field" style="display: none;">
-                    <label for="specific_amount">Specific Amount to Save</label>
-                    <input type="text" class="form-control" id="specific_amount" name="specific_amount" placeholder="Enter specific amount">
-                </div>
-                <button type="submit" class="btn btn-danger">Deposit</button>
-                
-            </div>
-        </form>
+    <form id="balanceForm">
+        <!-- Input field for user ID -->
+        <label for="user_id">Enter PIN:</label><br>
+        <input type="number" id="user_id" name="user_id" min="1" required><br><br>
+        <!-- Input fields for transaction type and amount -->
+        <label for="transaction_type">Select Transaction Type:</label><br>
+        <select id="transaction_type" name="transaction_type">
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+        </select><br><br>
+        <label for="amount">Enter Amount:</label><br>
+        <input type="number" id="amount" name="amount" min="0" step="0.01" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
     </div>
 
     <script>
-        function toggleForm() {
-            var transactionType = document.getElementById("transaction_type").value;
-            var depositForm = document.getElementById("deposit_form");
-            var transferForm = document.getElementById("transfer_form");
-
-            if (transactionType === "deposit") {
-                depositForm.style.display = "block";
-                transferForm.style.display = "none";
-            } else if (transactionType === "transfer") {
-                depositForm.style.display = "none";
-                transferForm.style.display = "block";
-            }else {
-                depositForm.style.display = "none";
-                transferForm.style.display = "none";
+        document.getElementById("balanceForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            
+            // Get the transaction type, amount, and user ID entered by the user
+            const transactionType = document.getElementById("transaction_type").value;
+            const amount = parseFloat(document.getElementById("amount").value);
+            const userId = parseInt(document.getElementById("user_id").value); // Parse as integer
+            
+            // Perform client-side validation
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid positive amount.");
+                return;
             }
-        }
+            
+            // Send the transaction data to the server using AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "TransactionPage.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert(xhr.responseText);
+                    } else {
+                        alert("Error: " + xhr.status);
+                    }
+                }
+            };
+            // Send transaction type, amount, and user ID
+            xhr.send("transaction_type=" + transactionType + "&amount=" + amount + "&user_id=" + userId);
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <?php
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        session_start();
+        // Establish a database connection
+        $servername = "localhost";
+        $username = "root"; // Your MySQL username
+        $password = ""; // Your MySQL password
+        $dbname = "Banking";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Get the transaction type, amount, and user ID from the POST request
+        $transaction_type = $_POST['transaction_type'];
+        $amount = $_POST['amount'];
+        $userId = $_POST['user_id']; // Retrieve user ID from the form
+        
+        // Update the checking balance in the database based on transaction type and user ID
+        if ($transaction_type === 'deposit') {
+            $sql = "UPDATE Accounts SET checking_balance = checking_balance + ? WHERE user_id = ?";
+        } elseif ($transaction_type === 'withdraw') {
+            $sql = "UPDATE Accounts SET checking_balance = checking_balance - ? WHERE user_id = ?";
+        } else {
+            echo "Invalid transaction type.";
+            exit;
+        }
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("di", $amount, $userId); // Bind amount and user ID
+        $stmt->execute();
+        $stmt->close();
+
+        // Record the transaction in the history table
+        $sql = "INSERT INTO History (transaction_type, amount, user_id) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sdi", $transaction_type, $amount, $userId);
+        $stmt->execute();
+        $stmt->close();
+
+        $conn->close();
+
+        echo "Transaction completed successfully.";
+    }
+    ?>
+    
 </body>
 </html>
 
