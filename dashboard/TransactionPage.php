@@ -31,62 +31,29 @@
 
     
 
-    <form id="balanceForm">
-        <!-- Input field for user ID -->
-        <label for="user_id">Enter PIN:</label><br>
-        <input class ="form-control" type="number" id="user_id" name="user_id" min="1" required><br><br>
-        <!-- Input fields for transaction type and amount -->
-        <label for="transaction_type">Select Transaction Type:</label><br>
-        <select  class="form-control" id="transaction_type" name="transaction_type">
-            <option value="deposit">Deposit</option>
-            <option value="withdraw">Withdraw</option>
-            <option value="transfer">Transfer</option>
-        </select><br><br>
-        <label for="account">Select Account:</label><br>
-        <select class="form-control" id="account" name="account">
-            <option value="checking">checking</option>
-            <option value="savings">savings</option>
-        </select><br><br>
-        <label for="amount">Enter Amount:</label><br>
-        <input class ="form-control" type="number" id="amount" name="amount" min="0" step="0.01" required><br><br>
-        <button type="submit" class="btn btn-danger">Submit</button>
-    </form>
+    <h1 style="text-align:center">Deposit or Withdraw From Your Accounts</h1>
+    <div stlye="text-align:center"class="container mt-4">
+        <form method="post" id="balanceForm" action="TransactionPage.php">
+            <!-- Input field for user ID -->
+            
+            <!-- Input fields for transaction type and amount -->
+            <label for="transaction_type">Select Transaction Type:</label><br>
+            <select class="form-control" id="transaction_type" name="transaction_type">
+                <option value="deposit">Deposit</option>
+                <option value="withdraw">Withdraw</option>
+                <option value="transfer">Transfer</option>
+            </select><br><br>
+            <label for="account">Select Account Type:</label><br>
+            <select class="form-control" id="account" name="account">
+                <option value="checking">Checking</option>
+                <option value="savings">Savings</option>
+            </select><br><br>
+            <label for="amount">Enter Amount:</label><br>
+            <input class="form-control"type="number" id="amount" name="amount" min="0" step="0.01" required><br><br>
+            <button type="submit" class="btn btn-danger">Submit</button>
+        </form>
     </div>
-
-    <script>
-        document.getElementById("balanceForm").addEventListener("submit", function(event) {
-            
-            // Get the transaction type, amount, and user ID entered by the user
-            const transactionType = document.getElementById("transaction_type").value;
-            const accountType = document.getElementById("account").value;
-            const amount = parseFloat(document.getElementById("amount").value);
-            const userId = parseInt(document.getElementById("user_id").value); // Parse as integer
-            
-            // Perform client-side validation
-            if (isNaN(amount) || amount <= 0) {
-                alert("Please enter a valid positive amount.");
-                return;
-            }
-            
-            // Send the transaction data to the server using AJAX
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "TransactionPage.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        alert(xhr.responseText);
-                    } else {
-                        alert("Error: " + xhr.status);
-                    }
-                }
-            };
-            // Send transaction type, amount, user ID,and account type to the server
-            xhr.send("transaction_type=" + transactionType + "&amount=" + amount + "&user_id=" + userId + "&account=" + accountType);
-        });
-
-        
-    </script>
+</body>
 
 <?php 
     session_start();
@@ -107,50 +74,38 @@
         $transactionType = $_POST['transaction_type'];
         $accountType = $_POST['account'];
         $amount = $_POST['amount'];
-        $userId = $_POST['user_id']; // Retrieve user ID from the form
-        $accountType = $_POST['account']; // Retrieve account type from the form
 
-        
-    
-        // Update the balance in the database based on transaction type, account type, and user ID
-        if ($transaction_type === 'deposit' && $accountType === 'checking') {
-            $sql = "UPDATE Accounts SET checking_balance = checking_balance + ? WHERE user_id = ?";
-        } elseif ($transaction_type === 'withdraw' && $accountType === 'checking') {
-            $sql = "UPDATE Accounts SET checking_balance = checking_balance - ? WHERE user_id = ?";
-        } elseif ($transaction_type === 'deposit' && $accountType === 'savings') {
-            $sql = "UPDATE Accounts SET savings_balance = savings_balance + ? WHERE user_id = ?";
-        } elseif ($transaction_type === 'withdraw' && $accountType === 'savings') {
-            $sql = "UPDATE Accounts SET savings_balance = savings_balance - ? WHERE user_id = ?";
-        } else {
-            echo "Invalid transaction type or account type.";
-            exit;
+        if($transactionType == 'deposit') {
+            if($accountType == 'checking') {
+                $sql = "UPDATE Accounts SET checking_balance = checking_balance + $amount WHERE user_id = $user_id";
+            }
+            if($accountType == 'savings') {
+                $sql = "UPDATE Accounts SET savings_balance = savings_balance + $amount WHERE user_id = $user_id";
+            }    
+        }
+        else if($transactionType == 'withdraw') {
+
+            if($accountType == 'checking') {
+                $sql = "UPDATE Accounts SET checking_balance = checking_balance - $amount WHERE user_id = $user_id";
+            }
+            if($accountType == 'savings') {
+                $sql = "UPDATE Accounts SET savings_balance = savings_balance - $amount WHERE user_id = $user_id";
+            }
+        }
+        else if($transactionType == 'transfer') {
+            if($accountType == 'checking') {
+                $sql = "UPDATE Accounts SET checking_balance = checking_balance - $amount, savings_balance = savings_balance + $amount WHERE user_id = $user_id";
+            }
+            if($accountType == 'savings') {
+                $sql = "UPDATE Accounts SET checking_balance = checking_balance + $amount, savings_balance = savings_balance - $amount WHERE user_id = $user_id";
+            }
         }
 
-       
-    
-        $stmt1 = $conn->prepare($sql1);
-        $stmt1->bind_param("di", $amount, $userId); // Bind amount and user ID
-        $stmt1->execute();
-        $stmt1->close();
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("di", $amount, $userId); // Bind amount and user ID
-        $stmt->execute();
-        $stmt->close();
-    
-        // Record the transaction in the history table
-        $sql = "INSERT INTO History (transaction_type, amount, user_id) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sdi", $transaction_type, $amount, $userId);
-        $stmt->execute();
-        $stmt->close();
-    
-        $conn->close();
-    
-        echo "Transaction completed successfully.";
+        if ($conn->query($sql) === TRUE) {
+            echo "Record updated successfully";
+        }
+        else {
+            echo "Error: " . $sql. " " . $conn->error . " ";
+        }
     }
-    ?>
-    
-</body>
-</html>
-
+?>

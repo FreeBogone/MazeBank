@@ -58,7 +58,7 @@
   
   if (mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-      echo "<h3><strong>Checking:</strong> " . $row["checking_balance"]. " - <strong>Savings:</strong> " . $row["savings_balance"]. "</h3><br>";
+      echo "<h3><strong>Checking:</strong> " . $row["checking_balance"]. "<br>  <strong>Savings:</strong> " . $row["savings_balance"]. "</h3><br>";
 
     }
   }
