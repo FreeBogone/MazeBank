@@ -24,6 +24,7 @@ CREATE TABLE Accounts(
 CREATE TABLE History(
     id INT AUTO_INCREMENT,
     transaction_type VARCHAR(255) NOT NULL,
+    account_type VARCHAR(255) NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     user_id INT NOT NULL,
     PRIMARY KEY(id),
@@ -39,6 +40,6 @@ INSERT INTO Accounts(checking_balance, savings_balance, user_id) VALUES(2000.00,
 
 -- @block
 INSERT INTO History(transaction_type, account_type, amount, user_id) VALUES('Deposit', 'Checking', 1000.00, 1);
-INSERT INTO History(transaction_type, amount, user_id) VALUES('Deposit', 'Savings', 5000.00, 1);
+INSERT INTO History(transaction_type, account_type, amount, user_id) VALUES('Deposit', 'Savings', 5000.00, 1);
 INSERT INTO History(transaction_type, account_type, amount, user_id) VALUES('Deposit', 'Checking', 2000.00, 2);
-INSERT INTO History(transaction_type, amount, user_id) VALUES('Deposit', 'Savings', 3000.00, 2);
+INSERT INTO History(transaction_type, account_type, amount, user_id) VALUES('Deposit', 'Savings', 3000.00, 2);

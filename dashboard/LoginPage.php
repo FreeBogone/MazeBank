@@ -93,11 +93,11 @@
             
                 $sql = "SELECT id, email, password FROM Users WHERE email='$email'";
                 $result = $conn->query($sql);
-            
                 if ($result->num_rows == 1) {
                     $row = $result->fetch_assoc();
                     if ($password === $row['password']) { // Direct comparison
                         $_SESSION['user_id'] = $row['id'];
+                        echo $_SESSION['user_id'];
                         header("Location: HomePage.php");
                         exit;
                     }

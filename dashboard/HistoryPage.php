@@ -28,7 +28,7 @@
 
 <body>
 <?php
-  $currentUser = 1;
+  session_start();
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -36,12 +36,14 @@
 
   // Create connection
   $conn = new mysqli($servername, $username, $password, $database);
+  // get user_id
+  $user_id = $_SESSION['user_id'];
   // Check connection
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
 }
 
-$rows = $conn->query("SELECT transaction_type, amount FROM History WHERE user_id = $currentUser");
+$rows = $conn->query("SELECT transaction_type, amount FROM History WHERE user_id = $user_id");
 
 ?>
 <div class="container table-responsive">

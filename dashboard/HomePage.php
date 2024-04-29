@@ -30,6 +30,7 @@
 <div class="container mt-4" style="text-align:center;" id="checking">
   
   <?php
+  session_start();
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -44,11 +45,10 @@
   $sql ="SELECT * FROM accounts WHERE user_id = 1";
   $result = mysqli_query($conn, $sql);
 
-  
+  $currentUser = $_SESSION["user_id"];
   if (mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
       echo "<strong>Checking:</strong> " . $row["checking_balance"]. " - <strong>Savings:</strong> " . $row["savings_balance"]. "<br>";
-
     }
   }
 ?>
