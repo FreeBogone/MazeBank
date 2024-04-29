@@ -105,5 +105,15 @@
         else {
             echo "Error: " . $sql. " " . $conn->error . " ";
         }
+
+        //insert new row into history
+        $sql = "INSERT INTO History (transaction_type, account_type, amount, user_id) VALUES ('$transactionType', '$accountType', '$amount', '$user_id')";
+        if ($conn->query($sql) === TRUE) {
+            echo "New record inserted successfully<br>";
+        }
+        else {
+        echo "Error: " . $sql. " " . $conn->error . " ";
+        }
     }
+
 ?>
