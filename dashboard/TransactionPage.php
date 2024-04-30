@@ -56,6 +56,7 @@
 <?php 
     session_start();
     $user_id = $_SESSION['user_id'];
+    echo $user_id;
 
     $servername = "localhost";
     $username = "root";
@@ -100,7 +101,7 @@
         }
 
         if ($conn->query($sql) === TRUE) {
-            echo "Record updated successfully";
+            
         }
         else {
             echo "Error: " . $sql. " " . $conn->error . " ";
@@ -109,7 +110,7 @@
         //insert new row into history
         $sql = "INSERT INTO History (transaction_type, account_type, amount, user_id) VALUES ('$transactionType', '$accountType', '$amount', '$user_id')";
         if ($conn->query($sql) === TRUE) {
-            echo "New record inserted successfully<br>";
+            
         }
         else {
         echo "Error: " . $sql. " " . $conn->error . " ";

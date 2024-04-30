@@ -143,6 +143,22 @@
                 echo "<p class='error-message'>Error creating account: " . $conn->error . "</p>";
             }
             $stmt->close();
+
+            $rows = $conn->query("SELECT id FROM Users WHERE firstname = '$firstname'");
+
+            while ($row = $rows->fetch_assoc()) {
+                $user_id = $row['id'];
+            }
+
+            $sql = "INSERT INTO Accounts (checking_balance, savings_balance, user_id) VALUES (0, 0, $user_id)";
+            if ($conn->query($sql) === TRUE) {
+                
+            }
+            else {
+            echo "Error: " . $sql. " " . $conn->error . " ";
+            }
+
+
         }
         $conn->close();
         ?>

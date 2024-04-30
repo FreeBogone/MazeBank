@@ -43,7 +43,7 @@
       die("Connection failed: " . $conn->connect_error);
 }
 
-$rows = $conn->query("SELECT transaction_type, amount FROM History WHERE user_id = $user_id");
+$rows = $conn->query("SELECT transaction_type, account_type, amount FROM History WHERE user_id = $user_id");
 
 ?>
 <div class="container table-responsive">
@@ -51,6 +51,7 @@ $rows = $conn->query("SELECT transaction_type, amount FROM History WHERE user_id
     <thead class="thead-light">
       <tr>
         <th>Transaction Type</th>
+        <th>Account Type</th>
         <th>Amount</th>
       </tr>
       <?php 
